@@ -1,0 +1,149 @@
+
+.intro-box {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: $primery_color_3;
+
+}
+.intro-container {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.intro-text {
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    padding: 10px;
+}
+
+.intro-text h1 {
+    margin-bottom: 1rem;
+}
+.intro-text p {
+    font-size: 18px;
+    padding: 10px;
+    line-height: 150%;
+}
+.contact_wrap {
+    display: flex;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.intro_btn,
+.readBtn-wraper {
+    background: none;
+    outline: none;
+    border: none;
+    padding: 1.3rem;
+    text-align: start;
+    width: fit-content;
+}
+.readBtn-wraper {
+    width: 100%;
+    text-align: end;
+}
+.bg-rotate,
+.read-btn{
+    text-decoration: none;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 15px;
+    transition:all 500ms ease-in-out;
+}
+.readbtn_container{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+.readBtnInfo {
+  color:$primery_color_2;
+  padding: 10px;
+  width: fit-content;
+  background: none;
+  outline: none;
+  cursor: pointer;
+  border: 1px solid $primery_color_2;
+}
+.bg-rotate::before,
+.read-btn::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: $secondary_color_2;
+    z-index: -1;
+    transform: rotate(8deg);
+    box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.6);
+
+}
+.read-btn {
+    color: #fff;
+}
+.read-btn::before {
+    background: $primery_color_2;
+    transform: rotate(0deg);
+}
+
+.bg-rotate:hover::before {
+    transform: rotate(0deg);
+}
+.read-btn:hover::before {
+    transform: rotate(8deg);
+}
+.introFoto-container {
+    max-width: 100%;
+    position: relative;
+    top: 20%;
+    transform: rotate(20deg);
+}
+.intro-foto {
+    width: 45vw;
+    filter: brightness(80%);
+}
+
+@media only screen and (max-width: 850px) {
+    .intro-box  {
+        position: relative;
+        opacity: 0.8;
+    }
+    .introFoto-container {
+        z-index: -1;
+        bottom: 0;
+    }
+    .intro-foto {
+        position: absolute;
+        top: 0vmin;
+        right: 0vw;
+        opacity: 0.5;
+        z-index: 1;
+        filter: brightness(50%);
+    }
+    .info-text{
+        min-width: 100%;   
+       
+    }
+ 
+    .info-wraper {
+        padding: 20px;
+        height: 100%;
+        width: 100%;
+        border-radius: 24px;
+        border-bottom: 2px solid $primery_color_3;
+        border-top: 2px solid $primery_color_3;
+    }
+    .gif{
+        display: none;
+    }
+}

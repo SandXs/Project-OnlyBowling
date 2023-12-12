@@ -1,0 +1,600 @@
+/* Dashboard */
+.Popup_wrapper {
+  display: block;
+  background-color: rgba(68, 68, 68, 0.6);
+  width: 100%;
+  height: 100%;
+}
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+/* Add styles to the form container */
+.form-container {
+  width: 70%;
+  margin: auto;
+  background-color: white;
+  border: 3px solid #f1f1f1;
+  top: 10%;
+  position: relative;
+  padding: 10px;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=email] {
+  color: #444444;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=email]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+.header-container {
+  display: inline-block;
+  background-color: #004596;
+  position: fixed;
+  z-index: 999;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  transition: all 500ms ease-in-out;
+  box-shadow: 1px 2px 4px 3px rgba(0, 0, 0, 0.6);
+}
+
+.nav-container ul {
+  display: flex;
+  background-color: #004596;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  padding: 10px;
+  flex-wrap: wrap;
+  width: 100%;
+  list-style: none;
+}
+
+.list_item a {
+  text-decoration: none;
+  margin-top: 2rem;
+  padding: 10px;
+  width: 100%;
+}
+
+.nav-container ul li {
+  display: block;
+}
+
+.nav-container ul li a {
+  color: #fff;
+  display: block;
+}
+
+#menu_bar {
+  display: none;
+}
+
+.menu_bar {
+  display: block;
+  position: fixed;
+  left: 10px;
+  top: 10px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 22px;
+  z-index: 9999;
+}
+
+#menu_bar:checked ~ .header-container {
+  left: -200px;
+}
+
+@media only screen and (max-width: 850px) {
+  .header-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  #menu_bar:checked ~ .header-container {
+    left: -100%;
+  }
+}
+.intro-box {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-color: #8EACCD;
+}
+
+.intro-container {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.intro-text {
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  padding: 10px;
+}
+
+.intro-text h1 {
+  margin-bottom: 1rem;
+}
+
+.intro-text p {
+  font-size: 18px;
+  padding: 10px;
+  line-height: 150%;
+}
+
+.contact_wrap {
+  display: flex;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.intro_btn,
+.readBtn-wraper {
+  background: none;
+  outline: none;
+  border: none;
+  padding: 1.3rem;
+  text-align: start;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.readBtn-wraper {
+  width: 100%;
+  text-align: end;
+}
+
+.bg-rotate,
+.read-btn {
+  text-decoration: none;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 15px;
+  transition: all 500ms ease-in-out;
+}
+
+.readbtn_container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.readBtnInfo {
+  color: #004596;
+  padding: 10px;
+  width: -moz-fit-content;
+  width: fit-content;
+  background: none;
+  outline: none;
+  cursor: pointer;
+  border: 1px solid #004596;
+}
+
+.bg-rotate::before,
+.read-btn::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #F9F3CC;
+  z-index: -1;
+  transform: rotate(8deg);
+  box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.6);
+}
+
+.read-btn {
+  color: #fff;
+}
+
+.read-btn::before {
+  background: #004596;
+  transform: rotate(0deg);
+}
+
+.bg-rotate:hover::before {
+  transform: rotate(0deg);
+}
+
+.read-btn:hover::before {
+  transform: rotate(8deg);
+}
+
+.introFoto-container {
+  max-width: 100%;
+  position: relative;
+  top: 20%;
+  transform: rotate(20deg);
+}
+
+.intro-foto {
+  width: 45vw;
+  filter: brightness(80%);
+}
+
+@media only screen and (max-width: 850px) {
+  .intro-box {
+    position: relative;
+    opacity: 0.8;
+  }
+  .introFoto-container {
+    z-index: -1;
+    bottom: 0;
+  }
+  .intro-foto {
+    position: absolute;
+    top: 0vmin;
+    right: 0vw;
+    opacity: 0.5;
+    z-index: 1;
+    filter: brightness(50%);
+  }
+  .info-text {
+    min-width: 100%;
+  }
+  .info-wraper {
+    padding: 20px;
+    height: 100%;
+    width: 100%;
+    border-radius: 24px;
+    border-bottom: 2px solid #8EACCD;
+    border-top: 2px solid #8EACCD;
+  }
+  .gif {
+    display: none;
+  }
+}
+.contact-container {
+  display: flex;
+  justify-content: flex-start;
+  background-image: url(../img/security_camera2.jpg);
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+  background-repeat: repeat;
+}
+
+.contact_form {
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.contact_form::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #E7EDF9;
+  z-index: -1;
+  opacity: 0.8;
+  border-top-right-radius: 40%;
+  border-bottom-right-radius: 40%;
+}
+
+.form_container h1 {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-bottom: 3px solid #8EACCD;
+  width: 80%;
+}
+
+.form_container .loginTitle {
+  text-align: center;
+  padding: 20px;
+}
+
+.form_container form {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.form_container select,
+.form_container input {
+  border: none;
+  outline: none;
+  padding: 15px;
+  margin: 10px;
+  border-radius: 10px;
+  min-width: 20vw;
+  font-size: 15px;
+}
+
+.form_container textarea {
+  border: none;
+  outline: none;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  width: 80%;
+}
+
+/* Chrome, Safari, Edge, Opera */
+/*hide the errows of the input type number*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+@media only screen and (max-width: 850px) {
+  .contact-container {
+    justify-content: center;
+  }
+  .contact_form {
+    width: 100%;
+  }
+  .contact_form::after {
+    border-radius: 0;
+  }
+}
+.login-container {
+  display: flex;
+  justify-content: flex-end;
+  background-image: url(../img/security_camera2.jpg);
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+  background-repeat: repeat;
+}
+
+.login_form {
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.login_form::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #E7EDF9;
+  z-index: -1;
+  opacity: 0.8;
+  border-top-left-radius: 40%;
+  border-bottom-left-radius: 40%;
+}
+
+.login_form input {
+  width: 80%;
+}
+
+.login_form a {
+  text-decoration: none;
+}
+
+.login_form p {
+  margin-top: 20px;
+}
+
+.submit_btn {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.submit_btn button {
+  background-color: #8EACCD;
+  color: #fff;
+  border: none;
+  outline: none;
+  padding: 10px;
+  width: 40%;
+  font-size: 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 50ms ease-in-out;
+}
+
+.submit_btn button:active {
+  transform: scale(0.98);
+}
+
+@media only screen and (max-width: 850px) {
+  .login-container {
+    justify-content: center;
+  }
+  .login_form {
+    width: 100%;
+  }
+  .login_form::after {
+    border-radius: 0;
+  }
+  .login_form input {
+    width: 80%;
+  }
+}
+/*intro info*/
+.intro-info-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
+}
+
+.info-wraper {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  margin-top: 4%;
+}
+
+.info-foto-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40vmax;
+  height: auto;
+  padding: 20px;
+}
+
+.intro-info-container img {
+  width: 100%;
+  border-radius: 20px;
+}
+
+.info-text {
+  width: 40%;
+  padding: 1.3rem;
+  word-wrap: break-word;
+  font-size: 17px;
+}
+
+.info-text h1 {
+  text-align: center;
+  padding: 20px;
+  border-bottom: 1px solid #000;
+  width: 100%;
+}
+
+.info-text p {
+  margin-top: 1rem;
+  padding: 10px;
+  line-height: 150%;
+  color: rgb(100, 98, 98);
+}
+
+.Read-btn {
+  background-color: #E7EDF9;
+}
+
+.info-text h3 {
+  margin: 10px;
+  width: 100%;
+}
+
+.info-text ul li {
+  margin-top: 10px;
+  margin-left: 5%;
+  color: rgb(100, 98, 98);
+}
+
+.info-text b {
+  font-size: 20px;
+  color: #000;
+}
+
+.toggle-text {
+  display: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #E7EDF9;
+  position: relative;
+}
+
+.page-container {
+  max-width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.adminFoto_container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.adminFoto_container .adminFoto {
+  width: 30vw;
+  height: 30vw;
+  filter: brightness(80%);
+  border-radius: 20px;
+}
+
+@media only screen and (max-width: 650px) {
+  .adminFoto_container {
+    position: absolute;
+    z-index: -1;
+    padding: 0;
+  }
+  .adminFoto_container .adminFoto {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    -o-object-fit: cover;
+       object-fit: cover;
+    opacity: 0.5;
+    filter: brightness(60%);
+  }
+}/*# sourceMappingURL=main.css.map */

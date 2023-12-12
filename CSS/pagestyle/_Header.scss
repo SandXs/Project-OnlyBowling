@@ -1,0 +1,68 @@
+@import "./tools";
+
+
+.header-container{
+    display:inline-block;
+    background-color: $primery_color_2;
+    position: fixed;
+    z-index: 999;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    transition: all 500ms ease-in-out;
+    box-shadow: 1px 2px 4px 3px rgba(0, 0, 0, 0.6);
+}
+
+.nav-container ul{
+  display: flex;
+  background-color: $primery_color_2;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height:100vh;
+  padding: 10px;
+  flex-wrap: wrap;
+  width: 100%;
+    list-style: none;
+}
+.list_item a{
+    text-decoration: none;
+    margin-top: 2rem;
+    padding: 10px;
+    width: 100%;
+}
+.nav-container ul li{
+    display: block;
+   
+}
+.nav-container ul li a{
+    color: #fff;
+    display: block;
+}
+#menu_bar{
+    display: none;
+}
+.menu_bar{
+    display: block;
+    position: fixed;
+    left:10px;
+    top: 10px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 22px;
+    z-index: 9999;
+}
+#menu_bar:checked ~ .header-container{
+    left: -200px;
+    
+}
+@media only screen and (max-width: 850px) {
+    .header-container{
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+    #menu_bar:checked ~ .header-container{
+        left: -100%;
+    }
+}
+

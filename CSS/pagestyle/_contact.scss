@@ -1,0 +1,94 @@
+@import "./tools";
+.contact-container {
+    display: flex;
+    justify-content: flex-start;
+    background-image: url(../img/security_camera2.jpg);
+    width: 100%;
+    object-fit: contain;
+    // background-position: center;
+    background-repeat: repeat;
+}
+.contact_form {
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // background-color:aquamarine;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+}
+.contact_form::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $primery_color_1;
+    z-index: -1;
+    opacity: 0.8;
+    border-top-right-radius: 40%;
+    border-bottom-right-radius: 40%;
+}
+.form_container h1 {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-bottom: 3px solid $primery_color_3;
+    width: 80%;
+}
+.form_container .loginTitle{
+    text-align: center;
+    padding: 20px;
+}
+.form_container form {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+.form_container select,
+.form_container input {
+    border: none;
+    outline: none;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    min-width: 20vw;
+    font-size: 15px;
+}
+.form_container textarea {
+    border: none;
+    outline: none;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    width: 80%;
+}
+
+/* Chrome, Safari, Edge, Opera */
+/*hide the errows of the input type number*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+@media only screen and (max-width: 850px) {
+    .contact-container {
+        justify-content: center;
+    }
+
+    .contact_form {
+        width: 100%;
+    }
+    .contact_form::after {
+        border-radius: 0;
+    }
+}
