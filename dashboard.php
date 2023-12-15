@@ -107,7 +107,10 @@ echo"
 </body>";
 ?>
 <script>
-
+// console.log(validateNumber(1.5));
+// function validateNumber(value){
+//    return value % 0.5 == 0; 
+// }
 $("Reservatie_search").keydown(function(){
   var searchInput = $(this).val();
   if(searchInput.length >= 3){
@@ -160,7 +163,7 @@ $("Reservatie_search").keydown(function(){
       }
     });
     $.post("functions/dashboard_functions.php",{ 
-      function: "del_ticket",
+      function: "del_reservering",
       reservering_id: reservering_ids 
     }).done(function(data) {
       loadReservering();
@@ -171,43 +174,53 @@ $("Reservatie_search").keydown(function(){
   function createReservering(){
     $.post("functions/dashboard_functions.php",{ 
       function: "create_reservering",
-      ticket_subject: $("#Ticket_Create_Dialog input[name='ticket_subject']").val(),
-      ticket_type: $("#Ticket_Create_Dialog select[name='ticket_type']").val(),
-      ticket_email: $("#Ticket_Create_Dialog input[name='ticket_email']").val(),
-      ticket_priority: $("#Ticket_Create_Dialog select[name='ticket_priority']").val(),
-      ticket_content: $("#Ticket_Create_Dialog textarea[name='ticket_content']").val()
+      ticket_subject: $("#Reservation_Create_Dialog input[name='ticket_subject']").val(),
+      ticket_type: $("#Reservation_Create_Dialog select[name='ticket_type']").val(),
+      reservering_email: $("#Reservation_Create_Dialog input[name='reservering_email']").val(),
+      ticket_priority: $("#Reservation_Create_Dialog select[name='ticket_priority']").val(),
+      ticket_content: $("#Reservation_Create_Dialog textarea[name='ticket_content']").val()
     }).done(function(data) {
-      $("#Ticket_Create_Dialog input[name='ticket_subject']").val("");
-      $("#Ticket_Create_Dialog select[name='ticket_type']").val("");
-      $("#Ticket_Create_Dialog input[name='ticket_email']").val("");
-      $("#Ticket_Create_Dialog select[name='ticket_priority']").val("");
-      $("#Ticket_Create_Dialog textarea[name='ticket_content']").val("");
+      $("#Reservation_Create_Dialog input[name='ticket_subject']").val("");
+      $("#Reservation_Create_Dialog select[name='ticket_type']").val("");
+      $("#Reservation_Create_Dialog input[name='reservering_email']").val("");
+      $("#Reservation_Create_Dialog select[name='ticket_priority']").val("");
+      $("#Reservation_Create_Dialog textarea[name='ticket_content']").val("");
       closePopup();
       loadReservering();
     });
   }
 
   function save_edited_ticket(){
-    $.post("functions/dashboard_functions.php",{ 
-      function: "save_edited_ticket",
-      ticket_id: $("#Ticket_Edit_Dialog input[name='ticket_id']").val(),
-      ticket_subject: $("#Ticket_Edit_Dialog input[name='ticket_subject']").val(),
-      ticket_type: $("#Ticket_Edit_Dialog select[name='ticket_type']").val(),
-      ticket_email: $("#Ticket_Edit_Dialog input[name='ticket_email']").val(),
-      ticket_priority: $("#Ticket_Edit_Dialog select[name='ticket_priority']").val(),
-      ticket_content: $("#Ticket_Edit_Dialog textarea[name='ticket_content']").val(),
-      ticket_response: $("#Ticket_Edit_Dialog textarea[name='ticket_response']").val()
-    }).done(function(data) {
-      $("#Ticket_Edit_Dialog input[name='ticket_id']").val("");
-      $("#Ticket_Edit_Dialog input[name='ticket_subject']").val("");
-      $("#Ticket_Edit_Dialog select[name='ticket_type']").val("");
-      $("#Ticket_Edit_Dialog input[name='ticket_email']").val("");
-      $("#Ticket_Edit_Dialog select[name='ticket_priority']").val("");
-      $("#Ticket_Edit_Dialog textarea[name='ticket_content']").val("");
-      $("#Ticket_Edit_Dialog textarea[name='ticket_response']").val("");
-      closePopup();
-      loadReservering();
-    });
+    if(($("#Reservation_Edit_Dialog input[name='reservering_time']").val() % 0.5 == 0)&&(x >= 1 && x <= 10)){
+      $.post("functions/dashboard_functions.php",{ 
+        function: "save_edited_ticket",
+        reservering_id: $("#Reservation_Edit_Dialog input[name='reservering_id']").val(),
+        reservering_pers: $("#Reservation_Edit_Dialog input[name='reservering_pers']").val(),
+        reservering_time: $("#Reservation_Edit_Dialog input[name='reservering_time']").val(),
+        reservering_firstname: $("#Reservation_Edit_Dialog input[name='reservering_firstname']").val(),
+        reservering_lastname: $("#Reservation_Edit_Dialog input[name='reservering_lastname']").val(),
+        reservering_email: $("#Reservation_Edit_Dialog input[name='reservering_email']").val(),
+        reservering_date: $("#Reservation_Edit_Dialog input[name='reservering_date']").val(),
+        reservering_country: $("#Reservation_Edit_Dialog select[name='reservering_country']").val(),
+        reservering_adress: $("#Reservation_Edit_Dialog input[name='reservering_adress']").val(),
+        reservering_housenum: $("#Reservation_Edit_Dialog input[name='reservering_housenum']").val(),
+        reservering_placename: $("#Reservation_Edit_Dialog input[name='reservering_placename']").val()
+      }).done(function(data) {
+        $("#Reservation_Edit_Dialog input[name='reservering_id']").val("");
+        $("#Reservation_Edit_Dialog input[name='reservering_pers']").val("");
+        $("#Reservation_Edit_Dialog input[name='reservering_time']").val("");
+        $("#Reservation_Edit_Dialog input[name='reservering_firstname']").val("");
+        $("#Reservation_Edit_Dialog input[name='reservering_lastname']").val("");
+        $("#Reservation_Edit_Dialog input[name='reservering_email']").val("");
+        $("#Reservation_Edit_Dialog input[name='reservering_date']").val("");
+        $("#Reservation_Edit_Dialog select[name='reservering_country']").val("");
+        $("#Reservation_Edit_Dialog input[name='reservering_adress']").val("");
+        $("#Reservation_Edit_Dialog input[name='reservering_housenum']").val("");
+        $("#Reservation_Edit_Dialog input[name='reservering_placename']").val("");
+        closePopup();
+        loadReservering();
+      });
+    }
   }
 
   //edit ticket
@@ -215,7 +228,7 @@ $("Reservatie_search").keydown(function(){
     $.post("functions/dashboard_functions.php",{ 
       function: "popups",
       type_popup: "popup_reservering_edit",
-      ticket_id: $(this).data("ticket_id")
+      reservering_id: $(this).data("reservering_id")
     }).done(function(data){
       $("body .popups").empty();
       $("body .popups").last().append(data);

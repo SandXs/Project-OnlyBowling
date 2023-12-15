@@ -23,7 +23,7 @@ switch($_POST['function']){
         while($row = mysqli_fetch_array($result)){
             //$reservering_row .= print_r($row);
             $reservering_row .= '
-            <tr class="clickable-row" data-ticket_id="'. $row['reservering_id'] .'">
+            <tr class="clickable-row" data-reservering_id="'. $row['reservering_id'] .'">
                 <td><input type="checkbox" name="ticket_checkbox" id="'. $row['reservering_id'] .'"></td>
                 <td>'. $row['reservering_id'] .'</td>
                 <td>'. $row['reservering_date'] .'</td>
@@ -51,24 +51,24 @@ switch($_POST['function']){
         mysqli_close($con);
         break;
 
-    case 'del_ticket':
+    case 'del_reservering':
         $con = connectdb();
-        $query = 'UPDATE tickets SET ticket_del = 1 WHERE ticket_id IN ('.implode(",",$_POST['ticket_id']).')';
+        $query = 'UPDATE reserveringen SET reservering_is_del = 1 WHERE reservering_id IN ('.implode(",",$_POST['reservering_id']).')';
         mysqli_query($con, $query);
         mysqli_close($con);
         break;
     
     case 'save_edited_ticket':
         $con = connectdb();
-        //echo $_POST['ticket_id'];
-        $query = "UPDATE tickets SET 
+        //echo $_POST['reservering_id'];
+        $query = "UPDATE reserveringen SET 
             ticket_email = '".test_input($con,(($_POST['ticket_email'])!==""?$_POST['ticket_email']:$GLOBALS['user']['user_email']))."',
             ticket_subject = '".test_input($con,$_POST['ticket_subject'])."',
             ticket_type = ".intval(test_input($con,$_POST['ticket_type'])).",
             ticket_content = '".test_input($con,$_POST['ticket_content'])."',
             ticket_priority = ".intval(test_input($con,$_POST['ticket_priority'])).",
             ticket_response = '".test_input($con,$_POST['ticket_response'])."'
-        WHERE ticket_id = ".$_POST['ticket_id'];
+        WHERE reservering_id = ".$_POST['reservering_id'];
         //echo $query;
         mysqli_query($con, $query);
         mysqli_close($con);
@@ -137,13 +137,13 @@ switch($_POST['function']){
         if(($_POST['ticket_email']!=="")&&($_POST['ticket_type']!=="")&&($_POST['ticket_firstname']!=="")&&($_POST['ticket_lastname']!=="")&&($_POST['ticket_company']!=="")&&($_POST['ticket_content']!=="")){
             $conent = 'Bedrijf: '.$_POST['ticket_company'].' Naam: '.$_POST['ticket_firstname'].' '.$_POST['ticket_lastname'].' Inhoud: '.$_POST['ticket_content'];
             $con = connectdb();
-            $query = 'INSERT INTO tickets SET 
+            $query = 'INSERT INTO reserveringen SET 
                 ticket_email = "'.test_input($con,$_POST['ticket_email']).'",
                 ticket_subject = "'.test_input($con,$_POST['ticket_subject']).'",
                 ticket_type = '.intval(test_input($con,$_POST['ticket_type'])).',
                 ticket_content = "'.test_input($con,$conent).'",
                 ticket_priority = 0,
-                ticket_del = 0,
+                reservering_is_del = 0,
                 ticket_create_date = "'.currentDate().'"';
             mysqli_query($con, $query);
             mysqli_close($con);
@@ -171,29 +171,66 @@ switch($_POST['function']){
 
             case 'popup_reservering_create':
                 echo '
-                <div class="form-popup Popup_wrapper" id="Ticket_Create_Dialog">
+                <div class="form-popup Popup_wrapper" id="Reservation_Create_Dialog">
                 <form method="" class="form-container">
                     <h1>Create ticket</h1>';
-                    if ($GLOBALS['user']['user_group_id'] == 2) {
+                    if (($GLOBALS['user']['user_group_id'] == 1)||($GLOBALS['user']['user_group_id'] == 2)) {
                         echo '
                         <div>
-                            <label for="ticket_subject"><b>Email</b></label>
-                            <input type="email" placeholder="Email" name="reservering_email" required>
+                            <label for="reservering_email"><b>Email</b></label>
+                            <input type="email" placeholder="" name="reservering_email" required>
                         </div>';
                     }
                     echo'
                     <div>
-                    <label for="ticket_subject"><b>Subject</b></label>
-                    <input type="text" placeholder="Enter Subject" name="reservering_" required>
+                        <label for="reservering_firstname"><b>Voornaam</b></label>
+                        <input type="text" placeholder="" name="reservering_firstname" required>
                     </div>
                     <div>
-                    <label for="ticket_subject"><b>Mobile Nummer</b></label>
-                    <input id="phone" type="tel" name="reservering_tel" />
+                        <label for="reservering_lastname"><b>Achternaam</b></label>
+                        <input type="text" placeholder="" name="reservering_lastname" required>
                     </div>
                     <div>
-                    <label for="ticket_content"><b>Content</b></label>
-                    <textarea placeholder="Enter Content" name="ticket_content" required></textarea>
+                        <label for="reservering_date"><b>Datum / Tijd</b></label>
+                        <input type="datetime" name="reservering_date" required>
                     </div>
+                    <div>
+                        <label for="reservering_time"><b>Duur</b></label>
+                        <input type="number" min="1" step="0.5" max="8" name="reservering_time" />
+                    </div>
+                    <div>
+                        <label for="reservering_pers"><b>Aantal personen</b></label>
+                        <input type="number" min="1" step="1" max="10" name="reservering_pers" />
+                    </div>
+                    <div>
+                        <label for="reservering_tel"><b>Tel</b></label>
+                        <input id="phone" type="tel" name="reservering_tel" />
+                    </div>
+                    <div>
+                        <label for="reservering_adress"><b>Adres</b></label>
+                        <input type="text" placeholder="" name="reservering_adress" required>
+                    </div>
+                    <div>
+                        <label for="reservering_housenum"><b>Huisnummer</b></label>
+                        <input type="text" placeholder="" name="reservering_housenum" required>
+                    </div>
+                    <div>
+                        <label for="reservering_placename"><b>Email</b></label>
+                        <input type="text" placeholder="" name="reservering_placename" required>
+                    </div>
+                    <div>
+                        <label for="reservering_country"><b>Land</b></label>
+                        <select name="reservering_country">
+                            <option value="">--Please choose an option--</option>';
+                            foreach($countryList as $key => $item){
+                                if($key == "NL"||$key == "BE"||$key == "DE"){
+                                    echo '<option value="'.$key.'">'.$item.'</option> ';
+                                }
+                            }
+                        echo '
+                        </select>
+                    </div>
+                        
                     <button type="button" onclick="createTicket()" class="btn">Send</button>
                     <button type="button" class="btn cancel" onclick="closePopup()">Close</button>
                 </form>
@@ -210,7 +247,7 @@ switch($_POST['function']){
                 </div>';
                 break;
 
-            case 'popup_sure_del_ticket':
+            case 'popup_sure_del_reservering':
                 echo '
                 <div class="form-popup Popup_wrapper">
                     <div class="form-container">
@@ -223,66 +260,88 @@ switch($_POST['function']){
 
             case 'popup_reservering_edit':
                 $con = connectdb();
-                $query = 'SELECT * FROM tickets WHERE reservering_deleted_at  = "" AND reservering_id = "'.$_POST['reservering_id'].'"';
+                $query = 'SELECT * FROM reserveringen WHERE reservering_is_del = 0 AND reservering_id = '.$_POST['reservering_id'];
                 $result = mysqli_query($con, $query);
                 $reservering = mysqli_fetch_array($result);
                 echo '
-                <div class="form-popup Popup_wrapper" id="Ticket_Edit_Dialog">
+                <div class="form-popup Popup_wrapper" id="Reservation_Edit_Dialog">
                 <form method="" class="form-container">
                     <input type="hidden" value="'.$reservering['reservering_id'].'" name="reservering_id">
-                    <h1>Edit</h1>';
-                    if ($GLOBALS['user']['user_group_id'] == 2) {
-                        echo '
+                    <h1>Edit</h1>
+                    <div>
+                    ';
+                    if (($GLOBALS['user']['user_group_id'] == 1)||($GLOBALS['user']['user_group_id'] == 2)) {
+                        echo'
                         <div>
-                            <label for="ticket_email"><b>Email</b></label>
-                            <input type="email" placeholder="Vul een email in..." name="reservering_email" value="'.(($reservering['reservering_email']!=='')?$reservering['reservering_email']:"").'" required>
-                        </div>';
+                            <label for="reservering_firstname"><b>Voornaam</b></label>
+                            <input type="text" placeholder="" name="reservering_firstname" value="'.(($reservering['reservering_firstname']!=='')?$reservering['reservering_firstname']:"").'" required>
+                        </div>
+                        <div>
+                            <label for="reservering_lastname"><b>Achternaam</b></label>
+                            <input type="text" placeholder="" name="reservering_lastname" value="'.(($reservering['reservering_lastname']!=='')?$reservering['reservering_lastname']:"").'" required>
+                        </div>
+                        <div>
+                            <label for="reservering_email"><b>Email</b></label>
+                            <input type="email" placeholder="" name="reservering_email" value="'.(($reservering['reservering_email']!=='')?$reservering['reservering_email']:"").'" required>
+                        </div>
+                        <div>
+                            <label for="reservering_date"><b>Datum / Tijd</b></label>
+                            <input type="datetime" name="reservering_date" value="'.(($reservering['reservering_date']!=='')?$reservering['reservering_date']:"").'" />
+                        </div>
+                        <div>
+                            <label for="reservering_time"><b>Duur</b></label>
+                            <input type="number" min="1" step="0.5" max="8" name="reservering_time" value="'.(($reservering['reservering_time']!=='')?$reservering['reservering_time']:"").'" />
+                        </div>
+                        <div>
+                            <label for="reservering_pers"><b>Aantal personen</b></label>
+                            <input type="number" min="1" step="1" max="10" name="reservering_pers" value="'.(($reservering['reservering_time']!=='')?$reservering['reservering_time']:"").'" />
+                        </div>
+                        <div>
+                            <label for="reservering_tel"><b>Tel</b></label>
+                            <input id="phone" type="tel" name="reservering_tel" value="'.(($reservering['reservering_tel']!=='')?$reservering['reservering_tel']:"").'" />
+                        </div>
+                        <div>
+                            <label for="reservering_adress"><b>Adres</b></label>
+                            <input type="text" placeholder="" name="reservering_adress" value="'.(($reservering['reservering_adress']!=='')?$reservering['reservering_adress']:"").'" required>
+                        </div>
+                        <div>
+                            <label for="reservering_housenum"><b>Huisnummer</b></label>
+                            <input type="text" placeholder="" name="reservering_housenum" value="'.(($reservering['reservering_housenum']!=='')?$reservering['reservering_housenum']:"").'" required>
+                        </div>
+                        <div>
+                            <label for="reservering_placename"><b>Email</b></label>
+                            <input type="text" placeholder="" name="reservering_placename" value="'.(($reservering['reservering_placename']!=='')?$reservering['reservering_placename']:"").'" required>
+                        </div>
+                        <div>
+                            <label for="reservering_country"><b>Land</b></label>
+                            <select name="reservering_country">
+                                <option value="">--Please choose an option--</option>';
+                                foreach($countryList as $key => $item){
+                                    if($key == "NL"||$key == "BE"||$key == "DE"){
+                                        echo '<option '.(($reservering['reservering_country'] == $key)?"selected":"").' value="'.$key.'">'.$item.'</option> ';
+                                    }
+                                }
+                            echo '
+                            </select>
+                        </div>
+                        ';
                     } else {
                         echo'
                         <div>
                             <label for="reservering_email"><b>Email</b></label>
                             <p>'.(($reservering['reservering_email']!=='')?$reservering['reservering_email']:"").'</p>
-                        </div>';
-                    }
-                    echo'
-                    <div>
-                    <div>
-                        <label for="ticket_subject"><b>Subject</b></label>
-                        <input id="phone" type="tel" name="reservering_tel" />
-                    </div>
-                    <div>
-                        <label for="ticket_type"><b>Type</b></label>
-                        <select name="ticket_type" required>
-                            <option value="">--Please choose an option--</option>';
-                            for ($i = 0; $i < count($reservering_type_arr); $i++) { 
-                                echo '<option '.(($reservering['ticket_type'] == $i)?"selected":"").' value="'.$i.'">'.$reservering_type_arr[$i].'</option> ';
-                            }
-                            echo '
-                        </select>
-                    </div>
-                    <div>
-                        <label for="ticket_priority"><b>Priority</b></label>
-                        <select name="ticket_priority" required>
-                            <option value="">--Please choose an option--</option>';
-                            for ($i = 0; $i < count($reservering_priority_arr); $i++) { 
-                                echo '<option '.(($reservering['ticket_priority'] == $i)?"selected":"").' value="'.$i.'">'.$reservering_priority_arr[$i][0].'</option> ';
-                            }
-                            echo '
-                        </select>
-                    </div>
-                    <div>
-                        <label for="ticket_content"><b>Content</b></label>
-                        <textarea placeholder="Enter Content" name="ticket_content" required>'.(($reservering['ticket_content']!=='')?$reservering['ticket_content']:"").'</textarea>
-                    </div>
-                    ';
-                    if ($GLOBALS['user']['user_group_id'] == 1) {
-                        echo'<div>
-                            <label for="ticket_response"><b>Response</b></label>
-                            <textarea placeholder="Enter Response" name="ticket_response">'.(($reservering['ticket_response']!=='')?$reservering['ticket_response']:"").'</textarea>
-                        </div>';
-                    } else {
-                        echo'<div>
-                            <h3>Response: </h3><p>'.(($reservering['ticket_response']!=='')?$reservering['ticket_response']:"").'</p>
+                        </div>
+                        <div>
+                            <label for="reservering_datum"><b>Datum / Tijd</b></label>
+                            <p>'.(($reservering['reservering_date']!=='')?$reservering['reservering_date']:"").'</p>
+                        </div>
+                        <div>
+                            <label for="reservering_time"><b>Duur in minuten</b></label>
+                            <p>'.(($reservering['reservering_time']!=='')?($reservering['reservering_time']*60):"").'</p>
+                        </div>
+                        <div>
+                            <label for="reservering_tel"><b>Tel</b></label>
+                            <p>'.(($reservering['reservering_tel']!=='')?$reservering['reservering_tel']:"").'</p>
                         </div>';
                     }
                     echo'
