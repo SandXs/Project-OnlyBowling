@@ -3,7 +3,7 @@
         define("DB_HOST","localhost");
         define("DB_USERNAME","root");
         define("DB_PASSWORD","root");
-        define("DB_NAME","secchief");
+        define("DB_NAME","OnlyBowlDB");
           
         //$con = connectdb();
         function connectdb() {

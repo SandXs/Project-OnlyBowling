@@ -7,6 +7,8 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
 
 //$user = Get_user_info(Fast_decrypt($_SESSION['id']));
 $user = Get_user_info($_SESSION['id']);
+//echo $_SESSION['id'];
+//print_r($user);
 if ($user['user_is_new']==0){
   echo'
   <!-- <div class="menu">
@@ -16,6 +18,9 @@ if ($user['user_is_new']==0){
       <button type="submit" name="signout" class=" btn btn-warning mb-3"> Sign Out</button>
     </form>
   </div> -->
+  <div>
+  <input id="Reservatie_search" type="text" placeholder="Search" name="Reservatie_search" required>
+  </div>
   <div style="z-index: 1;position:absolute;height: 100%;
   width: 100%;">
     <form action="" method="post">
@@ -24,13 +29,13 @@ if ($user['user_is_new']==0){
     <div id="tickets" class="container col-12 border rounded mt-3">
       <h1 class=" mt-3 text-center">Welcome, this is your dashboard!! </h1>
       <!-- A button to open the popup form -->
-      <button class="open-button" onclick="openTicketCreate()">Create ticket</button>
-      <button class="open-button" onclick="sure_del_ticket()">Delete ticket(s)</button>
-      <h2>'.(($GLOBALS['user']['user_is_admin'] == 1) ? "All active tickets" : "My tickets").'</h2>
-      <table id="ticketlist" class="table table-striped table-bordered table-hover">
+      <button class="open-button" onclick="openReserveringCreate()">Maak reservatie</button>
+      <button class="open-button" onclick="sure_del_reservering()">Delete reservatie(s)</button>
+      <h2>'.((($GLOBALS['user']['user_group_id'] == 1)&&( $GLOBALS['user']['user_group_id'] == 2)) ? "All active tickets" : "My tickets").'</h2>
+      <table id="reservationlist" class="table table-striped table-bordered table-hover">
         <thead class="table-dark">
           <tr>
-            <td>'.(($GLOBALS['user']['user_is_admin'] == 1) ? "<input type='checkbox' id='checkAllTickets'>" : "").'</td>
+            <td>'.(($GLOBALS['user']['user_group_id'] == 2) ? "<input type='checkbox' id='checkAllReservering'>" : "").'</td>
             <td>ID</td>
             <td>Priority</td>
             <td>Type</td>
@@ -43,8 +48,13 @@ if ($user['user_is_new']==0){
         <tbody>
         </tbody>
       </table>
+      <script>
+        $(document).ready(function() {
+          loadReservering();
+        });
+      </script>
     </div>';
-    if($GLOBALS['user']['user_is_admin'] == 1){
+    if($GLOBALS['user']['user_group_id'] == 2){
       echo'
       <div id="users" class="container col-12 border rounded mt-3">
         <button class="open-button" onclick="openUserCreate()">Create user</button>
@@ -75,12 +85,7 @@ if ($user['user_is_new']==0){
   echo '
   </div>
   <div class="popups" style="height:100%;width:100%;"></div>
-  </body>
-  <script>
-    $(document).ready(function() {
-      loadTickets();
-    });
-  </script>';
+  ';
 } else {
   echo'
   <div class="" id="User_Updatepass_Dialog">
@@ -98,8 +103,17 @@ if ($user['user_is_new']==0){
     </form>
   </div>';
 }
+echo"
+</body>";
 ?>
 <script>
+
+$("Reservatie_search").keydown(function(){
+  var searchInput = $(this).val();
+  if(searchInput.length >= 3){
+    loadReservering(searchInput);
+  }
+});
 
   function closePopup() {
     $(".popups").empty();
@@ -107,8 +121,8 @@ if ($user['user_is_new']==0){
     
   }
 
-  function openTicketCreate() {
-    load_popup("popup_ticket_create");
+  function openReserveringCreate() {
+    load_popup("popup_reservering_create");
   }
 
   function load_popup (type_popup,functions) {
@@ -122,40 +136,41 @@ if ($user['user_is_new']==0){
     });
   }
 
-  function loadTickets() {
+  function loadReservering(searchInput) {
     $.post("functions/dashboard_functions.php",{ 
-      function: "load_Tickets"
+      function: "loadReservering",
+      searchInput: searchInput
     }).done(function(data){
-      $("#ticketlist tbody").empty();
-      $("#ticketlist tbody").last().append(data);
+      $("#reservationlist tbody").empty();
+      $("#reservationlist tbody").last().append(data);
     });
   }
 
-  function sure_del_ticket(){
-    load_popup("popup_sure_del_ticket");
+  function sure_del_reservering(){
+    load_popup("popup_sure_del_reservering");
   }
 
   //delete ticket
-  function delTicket(){
-    var ticket_ids = [];
-    $("#ticketlist tbody tr input:checkbox").each(function(){
+  function delReservering(){
+    var reservering_ids = [];
+    $("#reservationlist tbody tr input:checkbox").each(function(){
       var isChecked = $(this);
       if(isChecked.is(":checked")){
-        ticket_ids.push(isChecked.attr("id"));
+        reservering_ids.push(isChecked.attr("id"));
       }
     });
     $.post("functions/dashboard_functions.php",{ 
       function: "del_ticket",
-      ticket_id: ticket_ids 
+      reservering_id: reservering_ids 
     }).done(function(data) {
-      loadTickets();
-      $("#checkAllTickets").prop( "checked", false );
+      loadReservering();
+      $("#checkAllReservering").prop( "checked", false );
     });
   }
 
-  function createTicket(){
+  function createReservering(){
     $.post("functions/dashboard_functions.php",{ 
-      function: "create_ticket",
+      function: "create_reservering",
       ticket_subject: $("#Ticket_Create_Dialog input[name='ticket_subject']").val(),
       ticket_type: $("#Ticket_Create_Dialog select[name='ticket_type']").val(),
       ticket_email: $("#Ticket_Create_Dialog input[name='ticket_email']").val(),
@@ -168,7 +183,7 @@ if ($user['user_is_new']==0){
       $("#Ticket_Create_Dialog select[name='ticket_priority']").val("");
       $("#Ticket_Create_Dialog textarea[name='ticket_content']").val("");
       closePopup();
-      loadTickets();
+      loadReservering();
     });
   }
 
@@ -191,15 +206,15 @@ if ($user['user_is_new']==0){
       $("#Ticket_Edit_Dialog textarea[name='ticket_content']").val("");
       $("#Ticket_Edit_Dialog textarea[name='ticket_response']").val("");
       closePopup();
-      loadTickets();
+      loadReservering();
     });
   }
 
   //edit ticket
-  $("#ticketlist").on("click","tbody tr", function(){
+  $("#reservationlist").on("click","tbody tr", function(){
     $.post("functions/dashboard_functions.php",{ 
       function: "popups",
-      type_popup: "popup_ticket_edit",
+      type_popup: "popup_reservering_edit",
       ticket_id: $(this).data("ticket_id")
     }).done(function(data){
       $("body .popups").empty();
@@ -250,13 +265,13 @@ if ($user['user_is_new']==0){
       user_firstname: $("#User_Create_Dialog input[name='user_firstname']").val(),
       user_lastname: $("#User_Create_Dialog input[name='user_lastname']").val(),
       user_company: $("#User_Create_Dialog input[name='user_company']").val(),
-      user_is_admin: $("#User_Create_Dialog input[name='user_is_admin']:checked").length
+      user_group_id: $("#User_Create_Dialog input[name='user_group_id']:checked").length
     }).done(function(data) {
       $("#User_Create_Dialog input[name='user_email']").val("");
       $("#User_Create_Dialog input[name='user_firstname']").val("");
       $("#User_Create_Dialog input[name='user_lastname']").val("");
       $("#User_Create_Dialog input[name='user_company']").val("");
-      $("#User_Create_Dialog input[name='user_is_admin']").val("");
+      $("#User_Create_Dialog input[name='user_group_id']").val("");
       closePopup();
       loadUsers();
     });
@@ -269,13 +284,13 @@ if ($user['user_is_new']==0){
       user_firstname: $("#User_Create_Dialog input[name='user_firstname']").val(),
       user_lastname: $("#User_Create_Dialog input[name='user_lastname']").val(),
       user_company: $("#User_Create_Dialog input[name='user_company']").val(),
-      user_is_admin: $("#User_Create_Dialog input[name='user_is_admin']").val()
+      user_group_id: $("#User_Create_Dialog input[name='user_group_id']").val()
     }).done(function(data) {
       $("#User_Create_Dialog input[name='user_email']").val("");
       $("#User_Create_Dialog input[name='user_firstname']").val("");
       $("#User_Create_Dialog input[name='user_lastname']").val("");
       $("#User_Create_Dialog input[name='user_company']").val("");
-      $("#User_Create_Dialog input[name='user_is_admin']").val("");
+      $("#User_Create_Dialog input[name='user_group_id']").val("");
       closePopup();
       loadUsers();
     });
@@ -302,11 +317,24 @@ if ($user['user_is_new']==0){
         $.post("functions/dashboard_functions.php",{
           function: "savePassword",
           password: firstInput
-        }).done(function(){
+        }).done(function(data){
           window.location.reload();
+          //console.log(data);
+
         });
       }
     }
+  }
+
+  function getIp(callback) {
+    fetch('https://ipinfo.io/json?token=<your token>', { headers: { 'Accept': 'application/json' }})
+      .then((resp) => resp.json())
+      .catch(() => {
+        return {
+          country: 'nl',
+        };
+      })
+      .then((resp) => callback(resp.country));
   }
 </script>
 <?php

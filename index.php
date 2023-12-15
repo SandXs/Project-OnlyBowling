@@ -1,19 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+
 <?php 
 include './Header.php';
 ?>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<script>
-// setTimeout(function() {
-//     window.location.reload(1);
-// }, 5000);
-</script>
 
 
 <section class="page-container">
@@ -34,7 +22,7 @@ include './Header.php';
 
             </div>
             <div class="introFoto-container">
-                <img src="./img/Security_1.png" alt="niet gevonden" class="intro-foto">
+                <img src="<?php echo $brand_logo_bg;?>" alt="Sorry this image is broken (Please contact the administrator)" class="intro-foto">
             </div>
         </div>
     </div>

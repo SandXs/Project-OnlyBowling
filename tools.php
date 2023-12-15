@@ -1,4 +1,5 @@
 <?php
+include("config.php");
 include("functions/connectdb.php");
 include("default_values.php");
 

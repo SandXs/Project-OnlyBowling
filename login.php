@@ -10,13 +10,12 @@ if (isset($_POST['signin'])) {
   $query = 'SELECT * FROM users WHERE user_email = "'.$email.'"';
   $result = mysqli_query($con, $query);
   $user = mysqli_fetch_array($result);
-
+  
   if (!$user) {
-    echo'login failed';
+    header('location: login.php'); 
     exit;
   }
-
-  if (!password_verify($password,$user['user_pass'])) {
+  if (!password_verify($password,$user['user_hash'])) {
     header('location: login.php'); 
     exit;
   } else {
