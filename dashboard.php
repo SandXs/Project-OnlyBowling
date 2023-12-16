@@ -191,7 +191,7 @@ $("Reservatie_search").keydown(function(){
   }
 
   function save_edited_ticket(){
-    if(($("#Reservation_Edit_Dialog input[name='reservering_time']").val() % 0.5 == 0)&&(x >= 1 && x <= 10)){
+    if(($("#Reservation_Edit_Dialog input[name='reservering_time']").val() % 0.5 == 0)&&($("#Reservation_Edit_Dialog input[name='reservering_pers']").val() >= 1 && $("#Reservation_Edit_Dialog input[name='reservering_pers']").val() <= 10)){
       $.post("functions/dashboard_functions.php",{ 
         function: "save_edited_ticket",
         reservering_id: $("#Reservation_Edit_Dialog input[name='reservering_id']").val(),
@@ -205,7 +205,7 @@ $("Reservatie_search").keydown(function(){
         reservering_adress: $("#Reservation_Edit_Dialog input[name='reservering_adress']").val(),
         reservering_housenum: $("#Reservation_Edit_Dialog input[name='reservering_housenum']").val(),
         reservering_placename: $("#Reservation_Edit_Dialog input[name='reservering_placename']").val()
-      }).done(function(data) {
+      }).done(function(data,event) {
         $("#Reservation_Edit_Dialog input[name='reservering_id']").val("");
         $("#Reservation_Edit_Dialog input[name='reservering_pers']").val("");
         $("#Reservation_Edit_Dialog input[name='reservering_time']").val("");

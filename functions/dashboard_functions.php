@@ -60,16 +60,19 @@ switch($_POST['function']){
     
     case 'save_edited_ticket':
         $con = connectdb();
-        //echo $_POST['reservering_id'];
-        $query = "UPDATE reserveringen SET 
-            ticket_email = '".test_input($con,(($_POST['ticket_email'])!==""?$_POST['ticket_email']:$GLOBALS['user']['user_email']))."',
-            ticket_subject = '".test_input($con,$_POST['ticket_subject'])."',
-            ticket_type = ".intval(test_input($con,$_POST['ticket_type'])).",
-            ticket_content = '".test_input($con,$_POST['ticket_content'])."',
-            ticket_priority = ".intval(test_input($con,$_POST['ticket_priority'])).",
-            ticket_response = '".test_input($con,$_POST['ticket_response'])."'
-        WHERE reservering_id = ".$_POST['reservering_id'];
-        //echo $query;
+        $query = 'UPDATE reserveringen SET 
+            reservering_email = "'.test_input($con,(($_POST['reservering_email'])!==""?$_POST['reservering_email']:$GLOBALS['user']['user_email'])).'",
+            reservering_pers = '.intval(test_input($con,$_POST['reservering_pers'])).',
+            reservering_time = '.floatval(test_input($con,$_POST['reservering_time'])).',
+            reservering_firstname = "'.test_input($con,$_POST['reservering_firstname']).'",
+            reservering_lastname = "'.test_input($con,$_POST['reservering_lastname']).'",
+            reservering_adress = "'.test_input($con,$_POST['reservering_adress']).'",
+            reservering_housenum = "'.test_input($con,$_POST['reservering_housenum']).'",
+            reservering_placename = "'.test_input($con,$_POST['reservering_placename']).'",
+            reservering_country = "'.test_input($con,$_POST['reservering_country']).'",
+            reservering_date = "'.test_input($con,$_POST['reservering_date']).'"
+        WHERE reservering_id = '.$_POST['reservering_id'];
+        // echo $query;
         mysqli_query($con, $query);
         mysqli_close($con);
         break;
@@ -87,8 +90,8 @@ switch($_POST['function']){
                 <td>'. $row['user_id'] .'</td>
                 <td>'. $row['user_firstname'] .' '. $row['user_lastname'] .'</td>
                 <td>'. $row['user_email'] .'</td>
-                <td>'. (($row['user_group_id']==2) ? "<i class='fa fa-check-circle-o' aria-hidden='true'></i>
-                " : "") .'</td>
+                <td>'. (($row['user_group_id']==2)?"<i class='fa fa-check-circle-o' aria-hidden='true'></i>
+                ":(($row['user_group_id']==1)?"<i class='fa fa-check-circle-o' aria-hidden='true'></i>":"")) .'</td>
             </tr>';
         }
         echo $user_row;
@@ -235,8 +238,8 @@ switch($_POST['function']){
                     <button type="button" class="btn cancel" onclick="closePopup()">Close</button>
                 </form>
                 <script>
-                    const phoneInputField = document.querySelector("#phone");
-                    const phoneInput = window.intlTelInput(phoneInputField, {
+                    var phoneInputField = document.querySelector("#phone");
+                    var phoneInput = window.intlTelInput(phoneInputField, {
                         preferredCountries: ["nl", "be", "de"],
                         initialCountry: "auto",
                         geoIpLookup: getIp,
@@ -324,6 +327,7 @@ switch($_POST['function']){
                             echo '
                             </select>
                         </div>
+                        <button type="button" onclick="save_edited_ticket()" class="btn">Save</button>
                         ';
                     } else {
                         echo'
@@ -345,13 +349,11 @@ switch($_POST['function']){
                         </div>';
                     }
                     echo'
-                    
-                    <button type="button" onclick="save_edited_ticket()" class="btn">Save</button>
                     <button type="button" class="btn cancel" onclick="closePopup()">Close</button>
                 </form>
                 <script>
-                    const phoneInputField = document.querySelector("#phone");
-                    const phoneInput = window.intlTelInput(phoneInputField, {
+                    var phoneInputField = document.querySelector("#phone");
+                    var phoneInput = window.intlTelInput(phoneInputField, {
                         preferredCountries: ["nl", "be", "de"],
                         initialCountry: "auto",
                         geoIpLookup: getIp,
