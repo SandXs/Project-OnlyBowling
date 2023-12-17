@@ -289,7 +289,7 @@ switch($_POST['function']){
                         </div>
                         <div>
                             <label for="reservering_date"><b>Datum / Tijd</b></label>
-                            <input type="datetime" name="reservering_date" value="'.(($reservering['reservering_date']!=='')?$reservering['reservering_date']:"").'" />
+                            <input type="datetime-local" name="reservering_date" value="'.(($reservering['reservering_date']!=='')?$reservering['reservering_date']:"").'" />
                         </div>
                         <div>
                             <label for="reservering_time"><b>Duur</b></label>

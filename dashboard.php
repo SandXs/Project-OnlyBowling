@@ -18,9 +18,9 @@ if ($user['user_is_new']==0){
       <button type="submit" name="signout" class=" btn btn-warning mb-3"> Sign Out</button>
     </form>
   </div> -->
-  <div>
+  <!-- <div>
   <input id="Reservatie_search" type="text" placeholder="Search" name="Reservatie_search" required>
-  </div>
+  </div> -->
   <div style="z-index: 1;position:absolute;height: 100%;
   width: 100%;">
     <form action="" method="post">
@@ -121,7 +121,7 @@ $("Reservatie_search").keydown(function(){
   function closePopup() {
     $(".popups").empty();
     $("body .popups").css({ "position" : "", "z-index": "" });
-    
+    e.preventdefault
   }
 
   function openReserveringCreate() {
@@ -205,7 +205,7 @@ $("Reservatie_search").keydown(function(){
         reservering_adress: $("#Reservation_Edit_Dialog input[name='reservering_adress']").val(),
         reservering_housenum: $("#Reservation_Edit_Dialog input[name='reservering_housenum']").val(),
         reservering_placename: $("#Reservation_Edit_Dialog input[name='reservering_placename']").val()
-      }).done(function(data,event) {
+      }).done(function(data) {
         $("#Reservation_Edit_Dialog input[name='reservering_id']").val("");
         $("#Reservation_Edit_Dialog input[name='reservering_pers']").val("");
         $("#Reservation_Edit_Dialog input[name='reservering_time']").val("");

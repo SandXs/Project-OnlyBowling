@@ -40,4 +40,9 @@ function Fast_decrypt($encrypted_message) {
     return $decrypted_message;
 }
 
+function check_for_updates($last_login){
+    if(($last_login < currentDate())&&(isset($last_login))) {
+        echo "check werkt";
+    }
+}
 ?>

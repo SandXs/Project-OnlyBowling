@@ -7,8 +7,9 @@ if (isset($_POST['signin'])) {
   $email = strtolower(test_input($con,$_POST['email']));
   $password = test_input($con,$_POST['password']);
   
-  $query = 'SELECT * FROM users WHERE user_email = "'.$email.'"';
+  $query = 'SELECT user_hash,user_last_login FROM users WHERE user_email = "'.$email.'"';
   $result = mysqli_query($con, $query);
+  mysqli_close($con);
   $user = mysqli_fetch_array($result);
   
   if (!$user) {
@@ -19,6 +20,15 @@ if (isset($_POST['signin'])) {
     header('location: login.php'); 
     exit;
   } else {
+    check_for_updates($user['user_last_login']);
+    // Set last login moment user
+    $con = connectdb();
+    $query = "UPDATE users SET
+        user_last_login = '".currentDate()."'
+    WHERE user_id = ".$_POST['user_id'];
+    mysqli_query($con, $query);
+    mysqli_close($con);
+
     $_SESSION['id'] = $user['user_id'];       // Storing the value in session
     //! Session data can be hijacked. Never store personal data such as password, security pin, credit card numbers other important data in $_SESSION
     header('location: dashboard.php?id=' . $user['user_id']);

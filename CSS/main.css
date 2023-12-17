@@ -492,7 +492,7 @@ input[type=number] {
 .info-foto-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: self-start;
   width: 40vmax;
   height: auto;
   padding: 20px;
