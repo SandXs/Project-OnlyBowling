@@ -27,6 +27,7 @@ switch($_POST['function']){
                 <td><input type="checkbox" name="ticket_checkbox" id="'. $row['reservering_id'] .'"></td>
                 <td>'. $row['reservering_id'] .'</td>
                 <td>'. $row['reservering_date'] .'</td>
+                <td>'. date('H:i', mktime(0,$row['reservering_time']*60)) .'</td>
                 <td>'. $row['reservering_pers'] .'</td>
                 <td>'. $row['reservering_tel'] .'</td>
                 <td>'. $row['reservering_email'] .'</td>
@@ -68,7 +69,7 @@ switch($_POST['function']){
             reservering_lastname = "'.test_input($con,$_POST['reservering_lastname']).'",
             reservering_adress = "'.test_input($con,$_POST['reservering_adress']).'",
             reservering_housenum = "'.test_input($con,$_POST['reservering_housenum']).'",
-            reservering_placename = "'.test_input($con,$_POST['reservering_placename']).'",
+            reservering_place = "'.test_input($con,$_POST['reservering_place']).'",
             reservering_country = "'.test_input($con,$_POST['reservering_country']).'",
             reservering_date = "'.test_input($con,$_POST['reservering_date']).'"
         WHERE reservering_id = '.$_POST['reservering_id'];
@@ -121,9 +122,11 @@ switch($_POST['function']){
             user_email = '".test_input($con,$_POST['user_email'])."',
             user_firstname = '".test_input($con,$_POST['user_firstname'])."',
             user_lastname = '".test_input($con,$_POST['user_lastname'])."',
-            user_company = '".test_input($con,$_POST['user_company'])."',
+            user_telnum = '".test_input($con,$_POST['user_lastname'])."',
+            user_lastname = '".test_input($con,$_POST['user_lastname'])."',
+            user_lastname = '".test_input($con,$_POST['user_lastname'])."',
             user_group_id = ".intval(test_input($con,$_POST['user_group_id'])).",
-            user_last_edited_date = '".currentDate()."'
+            user_updated_at = '".currentDate()."'
         WHERE user_id = ".$_POST['user_id'];
         mysqli_query($con, $query);
         mysqli_close($con);
@@ -185,68 +188,22 @@ switch($_POST['function']){
                         </div>';
                     }
                     echo'
-                    <div>
-                        <label for="reservering_firstname"><b>Voornaam</b></label>
-                        <input type="text" placeholder="" name="reservering_firstname" required>
-                    </div>
-                    <div>
-                        <label for="reservering_lastname"><b>Achternaam</b></label>
-                        <input type="text" placeholder="" name="reservering_lastname" required>
-                    </div>
-                    <div>
-                        <label for="reservering_date"><b>Datum / Tijd</b></label>
-                        <input type="datetime" name="reservering_date" required>
-                    </div>
-                    <div>
-                        <label for="reservering_time"><b>Duur</b></label>
-                        <input type="number" min="1" step="0.5" max="8" name="reservering_time" />
-                    </div>
-                    <div>
-                        <label for="reservering_pers"><b>Aantal personen</b></label>
-                        <input type="number" min="1" step="1" max="10" name="reservering_pers" />
-                    </div>
-                    <div>
-                        <label for="reservering_tel"><b>Tel</b></label>
-                        <input id="phone" type="tel" name="reservering_tel" />
-                    </div>
-                    <div>
-                        <label for="reservering_adress"><b>Adres</b></label>
-                        <input type="text" placeholder="" name="reservering_adress" required>
-                    </div>
-                    <div>
-                        <label for="reservering_housenum"><b>Huisnummer</b></label>
-                        <input type="text" placeholder="" name="reservering_housenum" required>
-                    </div>
-                    <div>
-                        <label for="reservering_placename"><b>Email</b></label>
-                        <input type="text" placeholder="" name="reservering_placename" required>
-                    </div>
-                    <div>
-                        <label for="reservering_country"><b>Land</b></label>
-                        <select name="reservering_country">
-                            <option value="">--Please choose an option--</option>';
-                            foreach($countryList as $key => $item){
-                                if($key == "NL"||$key == "BE"||$key == "DE"){
-                                    echo '<option value="'.$key.'">'.$item.'</option> ';
-                                }
-                            }
-                        echo '
-                        </select>
-                    </div>
+                        <div>
+                            <label for="reservering_date"><b>Datum / Tijd</b></label>
+                            <input type="datetime-local" name="reservering_date" />
+                        </div>
+                        <div>
+                            <label for="reservering_time"><b>Duur</b></label>
+                            <input type="number" min="1" step="0.5" max="8" name="reservering_time" />
+                        </div>
+                        <div>
+                            <label for="reservering_pers"><b>Aantal personen</b></label>
+                            <input type="number" min="1" step="1" max="10" name="reservering_pers" />
+                        </div>
                         
                     <button type="button" onclick="createTicket()" class="btn">Send</button>
                     <button type="button" class="btn cancel" onclick="closePopup()">Close</button>
                 </form>
-                <script>
-                    var phoneInputField = document.querySelector("#phone");
-                    var phoneInput = window.intlTelInput(phoneInputField, {
-                        preferredCountries: ["nl", "be", "de"],
-                        initialCountry: "auto",
-                        geoIpLookup: getIp,
-                        utilsScript:
-                            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-                    });
-                </script>
                 </div>';
                 break;
 
@@ -254,8 +211,8 @@ switch($_POST['function']){
                 echo '
                 <div class="form-popup Popup_wrapper">
                     <div class="form-container">
-                        <h1>Weet u zeker dat u deze ticket(s) wilt verwijderen</h1>
-                        <button type="button" onclick="delTicket()" class="btn cancel">Verwijderen</button>
+                        <h1>Weet u zeker dat u deze reservering(s) wilt verwijderen</h1>
+                        <button type="button" onclick="delReservering()" class="btn cancel">Verwijderen</button>
                         <button type="button" class="btn" onclick="closePopup()">Annuleren</button>
                     </div>
                 </div>';
@@ -297,7 +254,7 @@ switch($_POST['function']){
                         </div>
                         <div>
                             <label for="reservering_pers"><b>Aantal personen</b></label>
-                            <input type="number" min="1" step="1" max="10" name="reservering_pers" value="'.(($reservering['reservering_time']!=='')?$reservering['reservering_time']:"").'" />
+                            <input type="number" min="1" step="1" max="10" name="reservering_pers" value="'.(($reservering['reservering_pers']!=='')?$reservering['reservering_pers']:"").'" />
                         </div>
                         <div>
                             <label for="reservering_tel"><b>Tel</b></label>
@@ -312,8 +269,8 @@ switch($_POST['function']){
                             <input type="text" placeholder="" name="reservering_housenum" value="'.(($reservering['reservering_housenum']!=='')?$reservering['reservering_housenum']:"").'" required>
                         </div>
                         <div>
-                            <label for="reservering_placename"><b>Email</b></label>
-                            <input type="text" placeholder="" name="reservering_placename" value="'.(($reservering['reservering_placename']!=='')?$reservering['reservering_placename']:"").'" required>
+                            <label for="reservering_place"><b>Email</b></label>
+                            <input type="text" placeholder="" name="reservering_place" value="'.(($reservering['reservering_place']!=='')?$reservering['reservering_place']:"").'" required>
                         </div>
                         <div>
                             <label for="reservering_country"><b>Land</b></label>
@@ -342,10 +299,6 @@ switch($_POST['function']){
                         <div>
                             <label for="reservering_time"><b>Duur in minuten</b></label>
                             <p>'.(($reservering['reservering_time']!=='')?($reservering['reservering_time']*60):"").'</p>
-                        </div>
-                        <div>
-                            <label for="reservering_tel"><b>Tel</b></label>
-                            <p>'.(($reservering['reservering_tel']!=='')?$reservering['reservering_tel']:"").'</p>
                         </div>';
                     }
                     echo'

@@ -174,17 +174,13 @@ $("Reservatie_search").keydown(function(){
   function createReservering(){
     $.post("functions/dashboard_functions.php",{ 
       function: "create_reservering",
-      ticket_subject: $("#Reservation_Create_Dialog input[name='ticket_subject']").val(),
-      ticket_type: $("#Reservation_Create_Dialog select[name='ticket_type']").val(),
-      reservering_email: $("#Reservation_Create_Dialog input[name='reservering_email']").val(),
-      ticket_priority: $("#Reservation_Create_Dialog select[name='ticket_priority']").val(),
-      ticket_content: $("#Reservation_Create_Dialog textarea[name='ticket_content']").val()
+      reservering_pers: $("#Reservation_Create_Dialog input[name='reservering_pers']").val(),
+      reservering_time: $("#Reservation_Create_Dialog input[name='reservering_time']").val(),
+      reservering_date: $("#Reservation_Create_Dialog input[name='reservering_date']").val()
     }).done(function(data) {
-      $("#Reservation_Create_Dialog input[name='ticket_subject']").val("");
-      $("#Reservation_Create_Dialog select[name='ticket_type']").val("");
-      $("#Reservation_Create_Dialog input[name='reservering_email']").val("");
-      $("#Reservation_Create_Dialog select[name='ticket_priority']").val("");
-      $("#Reservation_Create_Dialog textarea[name='ticket_content']").val("");
+      $("#Reservation_Create_Dialog input[name='reservering_pers']").val("");
+      $("#Reservation_Create_Dialog input[name='reservering_time']").val("");
+      $("#Reservation_Create_Dialog input[name='reservering_date']").val("");
       closePopup();
       loadReservering();
     });
@@ -204,7 +200,7 @@ $("Reservatie_search").keydown(function(){
         reservering_country: $("#Reservation_Edit_Dialog select[name='reservering_country']").val(),
         reservering_adress: $("#Reservation_Edit_Dialog input[name='reservering_adress']").val(),
         reservering_housenum: $("#Reservation_Edit_Dialog input[name='reservering_housenum']").val(),
-        reservering_placename: $("#Reservation_Edit_Dialog input[name='reservering_placename']").val()
+        reservering_place: $("#Reservation_Edit_Dialog input[name='reservering_place']").val()
       }).done(function(data) {
         $("#Reservation_Edit_Dialog input[name='reservering_id']").val("");
         $("#Reservation_Edit_Dialog input[name='reservering_pers']").val("");
@@ -216,7 +212,7 @@ $("Reservatie_search").keydown(function(){
         $("#Reservation_Edit_Dialog select[name='reservering_country']").val("");
         $("#Reservation_Edit_Dialog input[name='reservering_adress']").val("");
         $("#Reservation_Edit_Dialog input[name='reservering_housenum']").val("");
-        $("#Reservation_Edit_Dialog input[name='reservering_placename']").val("");
+        $("#Reservation_Edit_Dialog input[name='reservering_place']").val("");
         closePopup();
         loadReservering();
       });
